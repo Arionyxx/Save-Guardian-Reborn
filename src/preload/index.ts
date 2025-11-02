@@ -37,7 +37,10 @@ const electronAPI: ElectronAPI = {
   updateSettings: updates => ipcRenderer.invoke(IpcChannel.UPDATE_SETTINGS, updates),
 
   // Stats
-  getStorageStats: () => ipcRenderer.invoke(IpcChannel.GET_STORAGE_STATS)
+  getStorageStats: () => ipcRenderer.invoke(IpcChannel.GET_STORAGE_STATS),
+
+  // Save Scanning
+  scanGameSaves: () => ipcRenderer.invoke(IpcChannel.SCAN_GAME_SAVES)
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)

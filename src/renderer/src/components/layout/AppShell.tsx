@@ -16,7 +16,7 @@ export default function AppShell({ children }: AppShellProps) {
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-base-100">
       <TopBar />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden pt-14">
         {sidebarOpen && <SidebarNav collapsed={sidebarCollapsed} />}
 
         <main
