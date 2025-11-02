@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Cog6ToothIcon, FolderIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  Cog6ToothIcon,
+  FolderIcon,
+  PlusIcon,
+  XMarkIcon,
+  MagnifyingGlassIcon,
+  ArrowPathIcon
+} from '@heroicons/react/24/outline'
 import { useToastStore } from '../stores'
 
 interface SettingsData {
@@ -21,6 +28,8 @@ export default function Settings() {
     scanPaths: []
   })
   const [newScanPath, setNewScanPath] = useState('')
+  const [isScanning, setIsScanning] = useState(false)
+  const [scanResults, setScanResults] = useState<string | null>(null)
   const { addToast } = useToastStore()
 
   useEffect(() => {
@@ -65,6 +74,41 @@ export default function Settings() {
       ...prev,
       scanPaths: prev.scanPaths.filter(p => p !== path)
     }))
+  }
+
+  const runDetailedScan = async () => {
+    try {
+      setIsScanning(true)
+      setScanResults(null)
+      addToast('info', 'Running detailed scan... Check console for logs')
+
+      // Save settings first to use updated scan paths
+      await window.electronAPI.updateSettings(settings)
+
+      const results = await window.electronAPI.scanGameSaves()
+
+      const resultText = `
+✓ Scan completed successfully!
+
+Results:
+• Found ${results.length} game(s)
+• Total files: ${results.reduce((sum, game) => sum + game.fileCount, 0)}
+
+Detected Games:
+${results.map((game, i) => `${i + 1}. ${game.gameName}\n   Path: ${game.savePath}\n   Files: ${game.fileCount} (${game.totalSize})`).join('\n')}
+
+Check the browser console (F12) for detailed scan logs.
+      `.trim()
+
+      setScanResults(resultText)
+      addToast('success', `Found ${results.length} game(s)`)
+    } catch (error) {
+      console.error('Scan failed:', error)
+      setScanResults(`Error during scan: ${error}`)
+      addToast('error', 'Scan failed')
+    } finally {
+      setIsScanning(false)
+    }
   }
 
   return (
@@ -163,14 +207,18 @@ export default function Settings() {
               <div className="mt-4">
                 <div className="mb-4 space-y-2">
                   <p className="text-xs font-semibold uppercase text-base-content/60">
-                    Default Scan Locations:
+                    Default Scan Locations (Windows):
                   </p>
                   <ul className="space-y-1 text-xs text-base-content/70">
                     <li>• C:\Users\[Username]\Documents\My Games</li>
+                    <li>• C:\Users\[Username]\Documents</li>
                     <li>• C:\Users\[Username]\AppData\Roaming</li>
                     <li>• C:\Users\[Username]\AppData\Local</li>
+                    <li>• C:\Users\[Username]\AppData\LocalLow (Unity games)</li>
                     <li>• C:\Users\[Username]\Saved Games</li>
+                    <li>• C:\Users\[Username]\OneDrive\Documents (if synced)</li>
                     <li>• C:\Program Files (x86)\Steam\userdata</li>
+                    <li>• C:\ProgramData</li>
                   </ul>
                 </div>
 
@@ -212,6 +260,45 @@ export default function Settings() {
                       </div>
                     ))
                   )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card bg-base-200 shadow-lg">
+            <div className="card-body">
+              <h2 className="card-title flex items-center gap-2">
+                <MagnifyingGlassIcon className="size-6" />
+                Scan Diagnostics
+              </h2>
+              <p className="text-sm text-base-content/60">
+                Run a detailed scan to see what the scanner is finding
+              </p>
+
+              <div className="mt-4">
+                <button
+                  onClick={runDetailedScan}
+                  disabled={isScanning}
+                  className="btn btn-primary gap-2"
+                >
+                  <ArrowPathIcon className={`size-5 ${isScanning ? 'animate-spin' : ''}`} />
+                  {isScanning ? 'Scanning...' : 'Run Detailed Scan'}
+                </button>
+
+                {scanResults && (
+                  <div className="mt-4 rounded-lg bg-base-100 p-4">
+                    <pre className="whitespace-pre-wrap text-xs font-mono">{scanResults}</pre>
+                  </div>
+                )}
+
+                <div className="mt-4 text-xs text-base-content/60">
+                  <p className="font-semibold">What this does:</p>
+                  <ul className="mt-2 list-inside list-disc space-y-1">
+                    <li>Scans all default and custom paths</li>
+                    <li>Shows which directories are accessible</li>
+                    <li>Lists all games found with file counts and sizes</li>
+                    <li>Outputs detailed logs to the browser console (F12)</li>
+                  </ul>
                 </div>
               </div>
             </div>
