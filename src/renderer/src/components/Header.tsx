@@ -1,4 +1,11 @@
-import { Bars3Icon, XMarkIcon, MinusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  XMarkIcon,
+  MinusIcon,
+  ArrowsPointingOutIcon,
+  MoonIcon,
+  SunIcon
+} from '@heroicons/react/24/outline'
 import { useAppStore } from '../stores'
 
 export default function Header() {
@@ -16,6 +23,14 @@ export default function Header() {
     await window.electronAPI.closeWindow()
   }
 
+  const toggleTheme = () => {
+    if (theme === 'gaming') {
+      setTheme('light')
+    } else {
+      setTheme('gaming')
+    }
+  }
+
   return (
     <header className="border-b border-base-300 bg-base-100">
       <div className="flex h-14 items-center justify-between px-4">
@@ -27,20 +42,18 @@ export default function Header() {
           >
             {sidebarOpen ? <XMarkIcon className="size-5" /> : <Bars3Icon className="size-5" />}
           </button>
-          <h1 className="text-lg font-bold">Electron App</h1>
+          <h1 className="text-lg font-bold">Backup Manager</h1>
           <span className="badge badge-primary badge-sm">v{appVersion}</span>
         </div>
 
         <div className="flex items-center gap-2">
-          <select
-            className="select select-bordered select-sm"
-            value={theme}
-            onChange={e => setTheme(e.target.value as 'light' | 'dark' | 'cupcake')}
-          >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="cupcake">Cupcake</option>
-          </select>
+          <button onClick={toggleTheme} className="btn btn-ghost btn-sm" aria-label="Toggle theme">
+            {theme === 'gaming' || theme === 'dark' ? (
+              <SunIcon className="size-5" />
+            ) : (
+              <MoonIcon className="size-5" />
+            )}
+          </button>
 
           <div className="flex gap-1">
             <button onClick={handleMinimize} className="btn btn-ghost btn-sm" aria-label="Minimize">

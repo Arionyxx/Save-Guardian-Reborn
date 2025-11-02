@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
-import { useAppStore } from './stores/appStore'
-import Header from './components/Header'
-import WelcomeCard from './components/WelcomeCard'
+import { useAppStore, useToastStore } from './stores'
+import { AppShell } from './components/layout'
+import { ToastContainer } from './components/primitives'
+import Dashboard from './pages/Dashboard'
 
 function App() {
-  const { isLoading, setLoading, setAppVersion } = useAppStore()
+  const { setLoading, setAppVersion } = useAppStore()
+  const { toasts, removeToast } = useToastStore()
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        setLoading(true)
+        setLoading(true, 'Initializing application...')
         const version = await window.electronAPI.getAppVersion()
         setAppVersion(version)
         await window.electronAPI.logInfo('App initialized successfully')
@@ -24,24 +26,13 @@ function App() {
     initializeApp()
   }, [setLoading, setAppVersion])
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-base-200">
-        <div className="text-center">
-          <span className="text-primary loading loading-spinner loading-lg"></span>
-          <p className="mt-4 text-lg font-semibold">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="app-container bg-base-200">
-      <Header />
-      <main className="flex flex-1 items-center justify-center p-8">
-        <WelcomeCard />
-      </main>
-    </div>
+    <>
+      <AppShell>
+        <Dashboard />
+      </AppShell>
+      <ToastContainer toasts={toasts} onClose={removeToast} />
+    </>
   )
 }
 

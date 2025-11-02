@@ -15,6 +15,10 @@
   #root {
     @apply h-screen w-screen overflow-hidden;
   }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
 }
 
 @layer components {
@@ -23,11 +27,21 @@
   }
 
   .btn-primary-custom {
-    @apply rounded-lg bg-primary-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-primary-700;
+    @apply hover:bg-primary-focus rounded-lg bg-primary px-4 py-2 font-semibold text-white transition-colors;
   }
 
   .card-custom {
-    @apply rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md;
+    @apply rounded-xl border border-base-300 bg-gaming-dark-card p-6 shadow-lg transition-shadow hover:shadow-xl;
+  }
+
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    @apply border-primary ring-2 ring-primary/20;
+  }
+
+  .btn:active {
+    @apply scale-95;
   }
 }
 
@@ -47,5 +61,37 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  .scrollbar-gaming {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.primary') theme('colors.base-300');
+  }
+
+  .scrollbar-gaming::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-gaming::-webkit-scrollbar-track {
+    @apply rounded bg-base-300;
+  }
+
+  .scrollbar-gaming::-webkit-scrollbar-thumb {
+    @apply rounded bg-primary;
+  }
+
+  .scrollbar-gaming::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-focus;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
