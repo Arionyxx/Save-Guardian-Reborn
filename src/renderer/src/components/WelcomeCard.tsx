@@ -16,7 +16,7 @@ export default function WelcomeCard() {
     <div className="card max-w-2xl bg-base-100 shadow-xl">
       <div className="card-body">
         <div className="flex items-center gap-3">
-          <RocketLaunchIcon className="text-primary size-12" />
+          <RocketLaunchIcon className="size-12 text-primary" />
           <h2 className="card-title text-3xl">Welcome to Your Electron App!</h2>
         </div>
 
