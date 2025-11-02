@@ -2,20 +2,21 @@
 
 ## Overview
 
-This document describes the complete UI shell implementation for the Backup Manager application, featuring a dark, blue/cyan-accented gaming aesthetic with comprehensive component library, responsive layouts, and accessibility features.
+This document describes the complete UI shell implementation for the Backup Manager application, featuring a Catppuccin Macchiato dark theme with purple/lavender accents, comprehensive component library, responsive layouts, and accessibility features.
 
 ## What Was Implemented
 
 ### 1. Theme System
 
-#### Gaming Theme Configuration
-- **Custom DaisyUI Theme**: Created a "gaming" theme with dark base colors and blue/cyan accents
+#### Gaming Theme Configuration (Catppuccin Macchiato)
+- **Custom DaisyUI Theme**: Created a "gaming" theme using Catppuccin Macchiato color palette
 - **Color Palette**:
-  - Base backgrounds: `#0a0e1a`, `#111827`, `#1a1f35`
-  - Primary blue: `#1890ff`
-  - Secondary cyan: `#13c2c2`
-  - Status colors: Success (#52c41a), Warning (#faad14), Error (#f5222d), Info (#1890ff)
-- **Tailwind Extensions**: Added custom colors, animations, and gradients
+  - Base backgrounds: `#181926` (crust), `#1e2030` (mantle), `#24273a` (base)
+  - Primary mauve: `#c6a0f6`
+  - Secondary lavender: `#b7bdf8`
+  - Accent sapphire: `#7dc4e4`
+  - Status colors: Success (#a6da95), Warning (#eed49f), Error (#ed8796), Info (#8aadf4)
+- **Tailwind Extensions**: Added custom Catppuccin colors, animations, and gradients
 - **Theme Persistence**: Auto-detection of system preference with localStorage persistence
 - **Theme Switching**: Toggle between gaming (dark) and light themes
 
@@ -403,7 +404,7 @@ Key UI dependencies:
 ## Conclusion
 
 This implementation provides a solid foundation for the Backup Manager application with:
-- Professional gaming-themed UI
+- Professional Catppuccin Macchiato-themed UI
 - Comprehensive component library
 - Full accessibility support
 - Responsive design

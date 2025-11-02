@@ -2,22 +2,23 @@
 
 ## Overview
 
-This document outlines the UI component system built for the Backup Manager application, featuring a dark, blue/cyan-accented gaming aesthetic with emphasis on accessibility, responsiveness, and polished user experience.
+This document outlines the UI component system built for the Backup Manager application, featuring a Catppuccin Macchiato dark theme with purple/lavender accents, emphasizing accessibility, responsiveness, and polished user experience.
 
 ## Theme System
 
-### Gaming Theme
+### Gaming Theme (Catppuccin Macchiato)
 
-The application uses a custom **gaming** theme with a dark base and blue/cyan accents:
+The application uses a custom **gaming** theme based on the Catppuccin Macchiato color palette:
 
-- **Base Colors**: Deep dark backgrounds (#0a0e1a, #111827, #1a1f35)
-- **Primary**: Bright blue (#1890ff) for main interactive elements
-- **Secondary**: Cyan (#13c2c2) for complementary accents
+- **Base Colors**: Catppuccin dark backgrounds (#181926, #1e2030, #24273a)
+- **Primary**: Mauve (#c6a0f6) for main interactive elements
+- **Secondary**: Lavender (#b7bdf8) for complementary accents
+- **Accent**: Sapphire (#7dc4e4) for tertiary highlights
 - **Status Colors**: 
-  - Success: #52c41a (green)
-  - Warning: #faad14 (yellow)
-  - Error: #f5222d (red)
-  - Info: #1890ff (blue)
+  - Success: #a6da95 (green)
+  - Warning: #eed49f (yellow)
+  - Error: #ed8796 (red)
+  - Info: #8aadf4 (blue)
 
 ### Theme Configuration
 

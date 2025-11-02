@@ -88,11 +88,11 @@ export function CircularProgress({
   const offset = circumference - (percentage / 100) * circumference
 
   const strokeColor = {
-    primary: '#1890ff',
-    secondary: '#13c2c2',
-    success: '#52c41a',
-    warning: '#faad14',
-    error: '#f5222d'
+    primary: '#c6a0f6',
+    secondary: '#b7bdf8',
+    success: '#a6da95',
+    warning: '#eed49f',
+    error: '#ed8796'
   }[color]
 
   return (

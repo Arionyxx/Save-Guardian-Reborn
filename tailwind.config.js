@@ -5,46 +5,55 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Blue/Cyan gaming palette
+        // Catppuccin Macchiato palette
+        ctp: {
+          // Base colors
+          base: '#24273a',
+          mantle: '#1e2030',
+          crust: '#181926',
+          // Surface colors
+          surface0: '#363a4f',
+          surface1: '#494d64',
+          surface2: '#5b6078',
+          // Overlay colors
+          overlay0: '#6e738d',
+          overlay1: '#8087a2',
+          overlay2: '#939ab7',
+          // Text colors
+          text: '#cad3f5',
+          subtext1: '#b8c0e0',
+          subtext0: '#a5adcb',
+          // Accent colors
+          mauve: '#c6a0f6',
+          lavender: '#b7bdf8',
+          blue: '#8aadf4',
+          sapphire: '#7dc4e4',
+          sky: '#91d7e3',
+          teal: '#8bd5ca',
+          green: '#a6da95',
+          yellow: '#eed49f',
+          peach: '#f5a97f',
+          maroon: '#ee99a0',
+          red: '#ed8796',
+          pink: '#f5bde6',
+          flamingo: '#f0c6c6',
+          rosewater: '#f4dbd6'
+        },
+        // Semantic color mappings for easy access
         gaming: {
-          blue: {
-            50: '#e6f7ff',
-            100: '#bae7ff',
-            200: '#91d5ff',
-            300: '#69c0ff',
-            400: '#40a9ff',
-            500: '#1890ff',
-            600: '#096dd9',
-            700: '#0050b3',
-            800: '#003a8c',
-            900: '#002766',
-            950: '#001529'
-          },
-          cyan: {
-            50: '#e6fffb',
-            100: '#b5f5ec',
-            200: '#87e8de',
-            300: '#5cdbd3',
-            400: '#36cfc9',
-            500: '#13c2c2',
-            600: '#08979c',
-            700: '#006d75',
-            800: '#00474f',
-            900: '#002329'
-          },
           dark: {
-            bg: '#0a0e1a',
-            surface: '#111827',
-            card: '#1a1f35',
-            hover: '#252b45',
-            border: '#2d3548'
+            bg: '#181926',
+            surface: '#1e2030',
+            card: '#24273a',
+            hover: '#363a4f',
+            border: '#494d64'
           }
         },
         status: {
-          success: '#52c41a',
-          warning: '#faad14',
-          error: '#f5222d',
-          info: '#1890ff'
+          success: '#a6da95',
+          warning: '#eed49f',
+          error: '#ed8796',
+          info: '#8aadf4'
         }
       },
       fontFamily: {
@@ -112,13 +121,13 @@ module.exports = {
           '100%': { transform: 'translateX(100%)' }
         },
         glow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(24, 144, 255, 0.5)' },
-          '50%': { boxShadow: '0 0 30px rgba(24, 144, 255, 0.8)' }
+          '0%, 100%': { boxShadow: '0 0 20px rgba(198, 160, 246, 0.5)' },
+          '50%': { boxShadow: '0 0 30px rgba(198, 160, 246, 0.8)' }
         }
       },
       backgroundImage: {
-        'gradient-gaming': 'linear-gradient(135deg, #0050b3 0%, #006d75 100%)',
-        'gradient-gaming-hover': 'linear-gradient(135deg, #096dd9 0%, #08979c 100%)'
+        'gradient-gaming': 'linear-gradient(135deg, #c6a0f6 0%, #b7bdf8 100%)',
+        'gradient-gaming-hover': 'linear-gradient(135deg, #8aadf4 0%, #7dc4e4 100%)'
       }
     }
   },
@@ -127,26 +136,26 @@ module.exports = {
     themes: [
       {
         gaming: {
-          primary: '#1890ff',
-          'primary-focus': '#096dd9',
-          'primary-content': '#ffffff',
-          secondary: '#13c2c2',
-          'secondary-focus': '#08979c',
-          'secondary-content': '#ffffff',
-          accent: '#36cfc9',
-          'accent-focus': '#13c2c2',
-          'accent-content': '#ffffff',
-          neutral: '#1a1f35',
-          'neutral-focus': '#111827',
-          'neutral-content': '#e6f7ff',
-          'base-100': '#0a0e1a',
-          'base-200': '#111827',
-          'base-300': '#1a1f35',
-          'base-content': '#e6f7ff',
-          info: '#1890ff',
-          success: '#52c41a',
-          warning: '#faad14',
-          error: '#f5222d'
+          primary: '#c6a0f6',
+          'primary-focus': '#b087e8',
+          'primary-content': '#181926',
+          secondary: '#b7bdf8',
+          'secondary-focus': '#a4aae5',
+          'secondary-content': '#181926',
+          accent: '#7dc4e4',
+          'accent-focus': '#5fb0d6',
+          'accent-content': '#181926',
+          neutral: '#24273a',
+          'neutral-focus': '#1e2030',
+          'neutral-content': '#cad3f5',
+          'base-100': '#24273a',
+          'base-200': '#1e2030',
+          'base-300': '#181926',
+          'base-content': '#cad3f5',
+          info: '#8aadf4',
+          success: '#a6da95',
+          warning: '#eed49f',
+          error: '#ed8796'
         }
       },
       'light',
