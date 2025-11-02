@@ -13,7 +13,6 @@ export interface IpcResponse<T = unknown> {
 
 export enum IpcChannel {
   GET_APP_VERSION = 'app:get-version',
-  GET_ENV_VAR = 'app:get-env',
   LOG_INFO = 'log:info',
   LOG_ERROR = 'log:error',
   LOG_WARN = 'log:warn',
@@ -24,7 +23,6 @@ export enum IpcChannel {
 
 export interface ElectronAPI {
   getAppVersion: () => Promise<string>
-  getEnvVar: (key: string) => Promise<string | undefined>
   logInfo: (message: string) => Promise<void>
   logError: (message: string, error?: Error) => Promise<void>
   logWarn: (message: string) => Promise<void>
