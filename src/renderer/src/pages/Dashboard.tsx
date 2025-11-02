@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   CloudArrowUpIcon,
   ClockIcon,
@@ -22,15 +22,48 @@ import {
   TabGroup,
   TabPanel
 } from '../components/primitives'
-import { mockGames, mockBackups, mockStorageStats, formatTimeAgo } from '../data/mockData'
+import { formatTimeAgo } from '../data/mockData'
 import { useToastStore } from '../stores'
+import type { Game, Backup, StorageStats } from '@shared/types/models'
 
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('all')
+  const [games, setGames] = useState<Game[]>([])
+  const [backups, setBackups] = useState<Backup[]>([])
+  const [storageStats, setStorageStats] = useState<StorageStats>({
+    used: 0,
+    total: 500,
+    backupCount: 0,
+    gameCount: 0
+  })
+  const [isLoading, setIsLoading] = useState(true)
   const { addToast } = useToastStore()
 
-  const filteredGames = mockGames.filter(game =>
+  useEffect(() => {
+    loadDashboardData()
+  }, [])
+
+  const loadDashboardData = async () => {
+    try {
+      setIsLoading(true)
+      const [gamesData, backupsData, statsData] = await Promise.all([
+        window.electronAPI.getAllGames(),
+        window.electronAPI.getAllBackups(),
+        window.electronAPI.getStorageStats()
+      ])
+      setGames(gamesData)
+      setBackups(backupsData)
+      setStorageStats(statsData)
+    } catch (error) {
+      console.error('Failed to load dashboard data:', error)
+      addToast('error', 'Failed to load dashboard data')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const filteredGames = games.filter(game =>
     game.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
@@ -62,7 +95,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-base-content/60">Total Backups</p>
-                  <p className="mt-1 text-3xl font-bold">{mockStorageStats.backupCount}</p>
+                  <p className="mt-1 text-3xl font-bold">{storageStats.backupCount}</p>
                 </div>
                 <div className="flex size-12 items-center justify-center rounded-lg bg-primary/20">
                   <CloudArrowUpIcon className="size-6 text-primary" />
@@ -76,7 +109,7 @@ export default function Dashboard() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-base-content/60">Tracked Games</p>
-                  <p className="mt-1 text-3xl font-bold">{mockStorageStats.gameCount}</p>
+                  <p className="mt-1 text-3xl font-bold">{storageStats.gameCount}</p>
                 </div>
                 <div className="flex size-12 items-center justify-center rounded-lg bg-secondary/20">
                   <PuzzlePieceIcon className="size-6 text-secondary" />
@@ -91,23 +124,23 @@ export default function Dashboard() {
                 <div className="flex-1">
                   <p className="text-sm text-base-content/60">Storage Usage</p>
                   <p className="mt-1 text-3xl font-bold">
-                    {mockStorageStats.used} GB
+                    {storageStats.used} GB
                     <span className="text-base font-normal text-base-content/60">
                       {' '}
-                      / {mockStorageStats.total} GB
+                      / {storageStats.total} GB
                     </span>
                   </p>
                   <ProgressBar
-                    value={mockStorageStats.used}
-                    max={mockStorageStats.total}
+                    value={storageStats.used}
+                    max={storageStats.total}
                     color="primary"
                     className="mt-3"
                   />
                 </div>
                 <div className="ml-4">
                   <CircularProgress
-                    value={mockStorageStats.used}
-                    max={mockStorageStats.total}
+                    value={storageStats.used}
+                    max={storageStats.total}
                     size={80}
                     strokeWidth={8}
                     color="primary"
@@ -124,45 +157,55 @@ export default function Dashboard() {
             <button className="btn btn-ghost btn-sm">View All</button>
           </AnimatedCardHeader>
           <AnimatedCardContent>
-            <div className="space-y-3">
-              {mockBackups.slice(0, 4).map(backup => (
-                <div
-                  key={backup.id}
-                  className="flex items-center justify-between rounded-lg border border-base-300 bg-base-200/50 p-4 transition-colors hover:bg-base-200"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-gaming text-lg">
-                      {mockGames.find(g => g.id === backup.gameId)?.icon || '🎮'}
-                    </div>
-                    <div>
-                      <p className="font-medium">{backup.gameName}</p>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-base-content/60">
-                        <ClockIcon className="size-3.5" />
-                        <span>{formatTimeAgo(backup.timestamp)}</span>
-                        <span>•</span>
-                        <FolderIcon className="size-3.5" />
-                        <span>{backup.size}</span>
+            {backups.length === 0 ? (
+              <div className="py-12 text-center">
+                <CloudArrowUpIcon className="mx-auto size-12 text-base-content/20" />
+                <p className="mt-4 text-base-content/60">No backups yet</p>
+                <p className="mt-1 text-sm text-base-content/40">
+                  Create your first backup to see it here
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {backups.slice(0, 4).map(backup => (
+                  <div
+                    key={backup.id}
+                    className="flex items-center justify-between rounded-lg border border-base-300 bg-base-200/50 p-4 transition-colors hover:bg-base-200"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-gaming text-lg">
+                        {games.find(g => g.id === backup.gameId)?.icon || '🎮'}
+                      </div>
+                      <div>
+                        <p className="font-medium">{backup.gameName}</p>
+                        <div className="mt-1 flex items-center gap-2 text-xs text-base-content/60">
+                          <ClockIcon className="size-3.5" />
+                          <span>{formatTimeAgo(backup.timestamp)}</span>
+                          <span>•</span>
+                          <FolderIcon className="size-3.5" />
+                          <span>{backup.size}</span>
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center gap-3">
+                      <Badge variant={backup.type === 'auto' ? 'info' : 'success'} size="sm" dot>
+                        {backup.type}
+                      </Badge>
+                      <StatusIndicator
+                        status={
+                          backup.status === 'completed'
+                            ? 'success'
+                            : backup.status === 'failed'
+                              ? 'error'
+                              : 'warning'
+                        }
+                        size="sm"
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Badge variant={backup.type === 'auto' ? 'info' : 'success'} size="sm" dot>
-                      {backup.type}
-                    </Badge>
-                    <StatusIndicator
-                      status={
-                        backup.status === 'completed'
-                          ? 'success'
-                          : backup.status === 'failed'
-                            ? 'error'
-                            : 'warning'
-                      }
-                      size="sm"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </AnimatedCardContent>
         </AnimatedCard>
 
@@ -172,16 +215,16 @@ export default function Dashboard() {
               <AnimatedCardTitle>Detected Games</AnimatedCardTitle>
               <TabGroup
                 tabs={[
-                  { id: 'all', label: 'All', badge: mockGames.length },
+                  { id: 'all', label: 'All', badge: games.length },
                   {
                     id: 'active',
                     label: 'Active',
-                    badge: mockGames.filter(g => g.status === 'active').length
+                    badge: games.filter(g => g.status === 'active').length
                   },
                   {
                     id: 'inactive',
                     label: 'Inactive',
-                    badge: mockGames.filter(g => g.status === 'inactive').length
+                    badge: games.filter(g => g.status === 'inactive').length
                   }
                 ]}
                 activeTab={activeTab}
@@ -224,7 +267,7 @@ function GamesList({
   games,
   onBackup
 }: {
-  games: typeof mockGames
+  games: Game[]
   onBackup: (gameName: string) => void
 }) {
   if (games.length === 0) {
