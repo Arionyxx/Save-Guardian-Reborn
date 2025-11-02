@@ -12,36 +12,46 @@ const SAVE_EXTENSIONS = [
   '.savegame',
   '.dat',
   '.profile',
-  '.json',
-  '.xml',
-  '.ini',
   '.slot',
-  '.slot1',
-  '.slot2',
-  '.slot3',
-  '.slot4',
-  '.slot5',
+  '.ess',
+  '.fos',
+  '.gamesave',
+  '.sg',
   '.bak',
   '.backup',
-  '.sg',
+  '.tmp',
+  '.autosave',
   '.svd',
   '.savdata',
   '.usr'
 ]
 
-// Wildcard patterns to catch variations
+// Wildcard patterns to catch variations and numbered saves
 const SAVE_PATTERNS = [
   '*.sav',
-  '*.sav*',
+  '*.sav[0-9]',
+  '*.sav[0-9][0-9]',
   '*.save',
-  '*.save*',
+  '*.save[0-9]',
+  '*.save[0-9][0-9]',
+  '*.savegame',
+  '*.profile',
+  '*.slot',
+  '*.slot[0-9]',
+  '*.slot[0-9][0-9]',
+  '*.ess',
+  '*.fos',
+  '*.gamesave',
+  '*.sg',
+  '*.bak',
+  '*.backup',
+  '*.tmp',
+  '*.autosave',
   'save*.dat',
   'save*.sav',
   'save_*.sav',
   'save[0-9]*.dat',
-  'save[0-9]*.sav',
-  '*.savegame',
-  '*.profile'
+  'save[0-9]*.sav'
 ]
 
 // Folders that commonly contain saves
