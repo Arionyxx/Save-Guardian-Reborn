@@ -8,7 +8,12 @@
     "outDir": "../../out/renderer",
     "types": ["vite/client"],
     "composite": true,
-    "rootDir": ".."
+    "rootDir": "..",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@shared/*": ["../shared/*"]
+    }
   },
   "include": ["./**/*", "../shared/**/*"],
   "exclude": ["node_modules"]

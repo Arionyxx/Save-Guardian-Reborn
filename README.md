@@ -9,7 +9,7 @@ A local-only game save manager built with Electron, React 18, and TypeScript. Sc
 - **TypeScript** - Strict type safety across all processes
 - **Vite** - Fast build tool and development server
 - **electron-vite** - Electron-specific Vite integration
-- **better-sqlite3** - Fast, lightweight local database (no cloud dependencies)
+- **JSON Storage** - Simple, lightweight local file storage (no native dependencies)
 - **Zustand** - Lightweight state management
 - **TailwindCSS** - Utility-first CSS framework
 - **DaisyUI** - Component library built on Tailwind
@@ -46,13 +46,7 @@ A local-only game save manager built with Electron, React 18, and TypeScript. Sc
 ## Prerequisites
 
 - **Node.js** 18+
-- **pnpm** 8+ (recommended package manager)
-
-Install pnpm if you don't have it:
-
-```bash
-npm install -g pnpm
-```
+- **npm** (comes with Node.js)
 
 ## Features
 
@@ -65,15 +59,15 @@ npm install -g pnpm
   - Custom user-defined paths
 - **Support for all game types** - Including cracked games (Skidrow, Empress, Codex, non-Steam)
 - **Local backups** - All backups stored locally in the app's data directory
-- **Lightweight database** - Uses better-sqlite3 for fast, local metadata storage
-- **No native compilation issues** - Installs cleanly without ODBC or complex native dependencies
+- **Simple JSON storage** - Uses JSON files for fast, local metadata storage
+- **No native compilation issues** - Installs cleanly without node-gyp or native dependencies
 
 ## Setup
 
 1. **Install dependencies:**
 
    ```bash
-   pnpm install
+   npm install
    ```
 
 2. **(Optional) Configure development settings:**
@@ -89,7 +83,7 @@ npm install -g pnpm
 Start the development server with hot reload:
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 This will:
@@ -101,16 +95,16 @@ This will:
 
 ## Available Scripts
 
-- `pnpm dev` - Start development mode with hot reload
-- `pnpm build` - Build the application for production
-- `pnpm preview` - Preview the production build
-- `pnpm lint` - Run ESLint on all files
-- `pnpm lint:fix` - Fix ESLint issues automatically
-- `pnpm format` - Format code with Prettier
-- `pnpm format:check` - Check code formatting
-- `pnpm typecheck` - Run TypeScript type checking
-- `pnpm test` - Run tests (placeholder)
-- `pnpm package` - Build and package the app for distribution
+- `npm run dev` - Start development mode with hot reload
+- `npm run build` - Build the application for production
+- `npm run preview` - Preview the production build
+- `npm run lint` - Run ESLint on all files
+- `npm run lint:fix` - Fix ESLint issues automatically
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
+- `npm run typecheck` - Run TypeScript type checking
+- `npm test` - Run tests (placeholder)
+- `npm run package` - Build and package the app for distribution
 
 ## Architecture
 
@@ -171,12 +165,12 @@ function Component() {
 1. **Build the application:**
 
    ```bash
-   pnpm build
+   npm run build
    ```
 
 2. **Package for distribution:**
    ```bash
-   pnpm package
+   npm run package
    ```
 
 This will create distributable packages in the `dist` directory for your platform.
@@ -202,38 +196,39 @@ Husky and lint-staged automatically run on commit:
 
 ## Local Storage
 
-The application stores all data locally:
+The application stores all data locally using simple JSON files:
 
-- **Game metadata** - Stored in a local SQLite database using better-sqlite3
+- **Game metadata** - Stored in `userData/games.json`
+- **Backup metadata** - Stored in `userData/backups.json`
+- **App settings** - Stored in `userData/settings.json`
 - **Backups** - Saved in the app's data directory (platform-specific):
-  - Windows: `%APPDATA%/game-save-manager/backups`
-  - macOS: `~/Library/Application Support/game-save-manager/backups`
-  - Linux: `~/.config/game-save-manager/backups`
-- **Configuration** - User preferences saved in local JSON files
-- **Cover art** - Uploaded images stored locally (no API calls)
+  - Windows: `%APPDATA%/electron-app/userData/`
+  - macOS: `~/Library/Application Support/electron-app/userData/`
+  - Linux: `~/.config/electron-app/userData/`
+- **No native dependencies** - Pure Node.js fs operations, no compilation required
 
 ## Troubleshooting
 
 ### App won't start
 
-- Ensure all dependencies are installed: `pnpm install`
+- Ensure all dependencies are installed: `npm install`
 - Check Node.js version: `node --version` (should be 18+)
-- Clear build cache: `rm -rf dist node_modules && pnpm install`
+- Clear build cache: `rm -rf out node_modules package-lock.json && npm install`
 
 ### Hot reload not working
 
-- Restart the dev server: `pnpm dev`
+- Restart the dev server: `npm run dev`
 - Check if port 5173 is available
 
 ### TypeScript errors
 
-- Run type checking: `pnpm typecheck`
+- Run type checking: `npm run typecheck`
 - Ensure all tsconfig.json files are properly configured
 
 ### Styling not applying
 
 - Verify Tailwind is processing files: check `tailwind.config.js` content paths
-- Rebuild: `pnpm build`
+- Rebuild: `npm run build`
 
 ## License
 
@@ -244,5 +239,5 @@ MIT
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run `pnpm lint` and `pnpm typecheck`
+4. Run `npm run lint` and `npm run typecheck`
 5. Submit a pull request
