@@ -4,8 +4,6 @@ import { IpcChannel, ElectronAPI } from '../shared/types'
 const electronAPI: ElectronAPI = {
   getAppVersion: () => ipcRenderer.invoke(IpcChannel.GET_APP_VERSION),
 
-  getEnvVar: (key: string) => ipcRenderer.invoke(IpcChannel.GET_ENV_VAR, key),
-
   logInfo: (message: string) => ipcRenderer.invoke(IpcChannel.LOG_INFO, message),
 
   logError: (message: string, error?: Error) =>

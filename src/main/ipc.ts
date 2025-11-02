@@ -7,10 +7,6 @@ export function setupIpcHandlers(): void {
     return app.getVersion()
   })
 
-  ipcMain.handle(IpcChannel.GET_ENV_VAR, (_event, key: string) => {
-    return process.env[key]
-  })
-
   ipcMain.handle(IpcChannel.LOG_INFO, (_event, message: string) => {
     log.info(message)
   })

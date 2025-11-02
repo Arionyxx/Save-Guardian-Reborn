@@ -1,6 +1,6 @@
-# Electron + React + TypeScript App
+# Game Save Manager - Local Edition
 
-A production-ready desktop application built with Electron, React 18, and TypeScript, featuring modern tooling and best practices.
+A local-only game save manager built with Electron, React 18, and TypeScript. Scan, backup, and manage your PC game saves without any cloud dependencies.
 
 ## Tech Stack
 
@@ -9,10 +9,10 @@ A production-ready desktop application built with Electron, React 18, and TypeSc
 - **TypeScript** - Strict type safety across all processes
 - **Vite** - Fast build tool and development server
 - **electron-vite** - Electron-specific Vite integration
+- **better-sqlite3** - Fast, lightweight local database (no cloud dependencies)
 - **Zustand** - Lightweight state management
 - **TailwindCSS** - Utility-first CSS framework
 - **DaisyUI** - Component library built on Tailwind
-- **Magic UI & Aceternity UI** - Additional UI components
 - **Heroicons** - Beautiful hand-crafted SVG icons
 - **ESLint & Prettier** - Code quality and formatting
 - **Husky & lint-staged** - Git hooks for pre-commit validation
@@ -54,6 +54,20 @@ Install pnpm if you don't have it:
 npm install -g pnpm
 ```
 
+## Features
+
+- **Local-only operation** - No cloud services or API keys required
+- **Game save scanning** - Automatically detect saves in common locations:
+  - Documents folder
+  - AppData/Local
+  - AppData/Roaming
+  - Saved Games
+  - Custom user-defined paths
+- **Support for all game types** - Including cracked games (Skidrow, Empress, Codex, non-Steam)
+- **Local backups** - All backups stored locally in the app's data directory
+- **Lightweight database** - Uses better-sqlite3 for fast, local metadata storage
+- **No native compilation issues** - Installs cleanly without ODBC or complex native dependencies
+
 ## Setup
 
 1. **Install dependencies:**
@@ -62,18 +76,13 @@ npm install -g pnpm
    pnpm install
    ```
 
-2. **Configure environment variables:**
+2. **(Optional) Configure development settings:**
 
    ```bash
    cp .env.example .env
    ```
 
-   Edit `.env` and add your credentials:
-   - `IGDB_CLIENT_ID` - Your IGDB API client ID
-   - `IGDB_CLIENT_SECRET` - Your IGDB API client secret
-   - `BOLT_API_KEY` - Your Bolt API key
-
-   > **Security Note:** Environment variables are only accessible from the main process. The renderer process must request them via IPC to maintain security.
+   The `.env` file is optional and only needed for development-specific settings.
 
 ## Development
 
@@ -135,7 +144,7 @@ ipcMain.handle('app:get-version', () => app.getVersion())
 - **Context Isolation** enabled - Renderer cannot access Node.js APIs directly
 - **Node Integration** disabled - Prevents security vulnerabilities
 - **Preload Script** - Only approved APIs are exposed to renderer
-- **Environment Variables** - Loaded only in main process, accessed via IPC
+- **Local-only architecture** - No external network requests or cloud services
 
 ### State Management
 
@@ -191,14 +200,17 @@ Husky and lint-staged automatically run on commit:
 - Prettier formatting
 - Type checking (via CI)
 
-## Environment Variables
+## Local Storage
 
-| Variable             | Description            | Required |
-| -------------------- | ---------------------- | -------- |
-| `IGDB_CLIENT_ID`     | IGDB API client ID     | Yes      |
-| `IGDB_CLIENT_SECRET` | IGDB API client secret | Yes      |
-| `BOLT_API_KEY`       | Bolt API key           | Yes      |
-| `NODE_ENV`           | Environment mode       | No       |
+The application stores all data locally:
+
+- **Game metadata** - Stored in a local SQLite database using better-sqlite3
+- **Backups** - Saved in the app's data directory (platform-specific):
+  - Windows: `%APPDATA%/game-save-manager/backups`
+  - macOS: `~/Library/Application Support/game-save-manager/backups`
+  - Linux: `~/.config/game-save-manager/backups`
+- **Configuration** - User preferences saved in local JSON files
+- **Cover art** - Uploaded images stored locally (no API calls)
 
 ## Troubleshooting
 
