@@ -1,6 +1,8 @@
 # Dependencies
 node_modules
-.pnpm-store
+
+# User data (JSON storage)
+userData/
 
 # Build outputs
 out
