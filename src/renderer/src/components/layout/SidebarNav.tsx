@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import {
   HomeIcon,
-  CloudArrowUpIcon,
   FolderIcon,
   Cog6ToothIcon,
   ChartBarIcon,
@@ -9,12 +7,14 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon
 } from '@heroicons/react/24/outline'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppStore } from '../../stores/appStore'
 import { cn } from '../../utils'
 
 interface NavItem {
   id: string
   label: string
+  path: string
   icon: typeof HomeIcon
   badge?: string | number
 }
@@ -24,16 +24,16 @@ interface SidebarNavProps {
 }
 
 const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: HomeIcon },
-  { id: 'backups', label: 'Backups', icon: CloudArrowUpIcon, badge: 3 },
-  { id: 'games', label: 'Games', icon: PuzzlePieceIcon },
-  { id: 'storage', label: 'Storage', icon: FolderIcon },
-  { id: 'analytics', label: 'Analytics', icon: ChartBarIcon },
-  { id: 'settings', label: 'Settings', icon: Cog6ToothIcon }
+  { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: HomeIcon },
+  { id: 'games', label: 'Games', path: '/games', icon: PuzzlePieceIcon },
+  { id: 'storage', label: 'Storage', path: '/storage', icon: FolderIcon },
+  { id: 'analytics', label: 'Analytics', path: '/analytics', icon: ChartBarIcon },
+  { id: 'settings', label: 'Settings', path: '/settings', icon: Cog6ToothIcon }
 ]
 
 export default function SidebarNav({ collapsed }: SidebarNavProps) {
-  const [activeItem, setActiveItem] = useState('dashboard')
+  const location = useLocation()
+  const navigate = useNavigate()
   const { setSidebarCollapsed } = useAppStore()
 
   const handleToggleCollapse = () => {
@@ -51,12 +51,12 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
         <ul className="space-y-1">
           {navItems.map(item => {
             const Icon = item.icon
-            const isActive = activeItem === item.id
+            const isActive = location.pathname === item.path
 
             return (
               <li key={item.id}>
                 <button
-                  onClick={() => setActiveItem(item.id)}
+                  onClick={() => navigate(item.path)}
                   className={cn(
                     'group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
                     'hover:bg-gaming-dark-hover focus:outline-none focus:ring-2 focus:ring-primary',

@@ -32,4 +32,22 @@ export interface AppSettings {
   backupInterval: number
   maxBackups: number
   backupLocation: string
+  scanPaths?: string[]
+}
+
+export interface DetectedSaveFile {
+  name: string
+  path: string
+  size: string
+  lastModified: string
+  extension: string
+}
+
+export interface DetectedSave {
+  id: string
+  gameName: string
+  savePath: string
+  files: DetectedSaveFile[]
+  totalSize: string
+  fileCount: number
 }

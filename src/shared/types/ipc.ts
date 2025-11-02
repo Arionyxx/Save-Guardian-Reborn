@@ -36,7 +36,9 @@ export enum IpcChannel {
   GET_SETTINGS = 'settings:get',
   UPDATE_SETTINGS = 'settings:update',
   // Stats
-  GET_STORAGE_STATS = 'stats:get-storage'
+  GET_STORAGE_STATS = 'stats:get-storage',
+  // Save Scanning
+  SCAN_GAME_SAVES = 'saves:scan'
 }
 
 export interface ElectronAPI {
@@ -75,6 +77,8 @@ export interface ElectronAPI {
   ) => Promise<import('./models').AppSettings>
   // Stats
   getStorageStats: () => Promise<import('./models').StorageStats>
+  // Save Scanning
+  scanGameSaves: () => Promise<import('./models').DetectedSave[]>
 }
 
 declare global {

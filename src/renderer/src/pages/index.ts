@@ -1,0 +1,5 @@
+export { default as Dashboard } from './Dashboard'
+export { default as Games } from './Games'
+export { default as Storage } from './Storage'
+export { default as Analytics } from './Analytics'
+export { default as Settings } from './Settings'

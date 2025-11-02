@@ -2,6 +2,7 @@ import { ipcMain, app, BrowserWindow } from 'electron'
 import log from 'electron-log'
 import { IpcChannel } from '../shared/types'
 import { dataService } from './services/data'
+import { scanGameSaves } from './services/saveScanner'
 
 export function setupIpcHandlers(): void {
   ipcMain.handle(IpcChannel.GET_APP_VERSION, () => {
@@ -107,6 +108,13 @@ export function setupIpcHandlers(): void {
   // Stats
   ipcMain.handle(IpcChannel.GET_STORAGE_STATS, async () => {
     return await dataService.getStorageStats()
+  })
+
+  // Save Scanning
+  ipcMain.handle(IpcChannel.SCAN_GAME_SAVES, async () => {
+    const settings = await dataService.getSettings()
+    const customPaths = (settings as { scanPaths?: string[] }).scanPaths || []
+    return await scanGameSaves(customPaths)
   })
 
   log.info('IPC handlers registered')
